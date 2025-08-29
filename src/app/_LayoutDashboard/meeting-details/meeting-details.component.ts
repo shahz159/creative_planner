@@ -451,51 +451,99 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   prevUpcomToday = new Date();
-
+  repeatBtn:any=false;
 
   Repeat_Meeting() {  
-   
-    document.getElementById("repeatModal").classList.add("kt-quick-active--on");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
-
-     if (new Date(this.prevUpcomToday).toDateString() === new Date(this._StartDate).toDateString()) {
+     this.repeatBtn = true
+     if (new Date(this.prevUpcomToday).toDateString() === new Date(this.delayschedule_date).toDateString()) {
       const nextDay = new Date();
       nextDay.setDate(nextDay.getDate() + 1);
-
+      this.disablePreviousDate = null;
       this._StartDate = null;
       this._SEndDate = null;
       this.disablePreviousTodayDate = null;
-      
+      this.minDate=null;
       // Let Angular update bindings first
       setTimeout(() => {
         this.disablePreviousTodayDate = nextDay;
+        this.disablePreviousDate  = nextDay;
         this._StartDate = nextDay;
         this._SEndDate = nextDay;
+        this.minDate= nextDay.toISOString().split('T')[0];
+
+        let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
+        let _currentdate=moment();
+        if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+        {
+            const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+            const index:number=this.StartTimearr.findIndex((item:any)=>{
+                const t=moment(item,'h:mm A');
+                const result=t>=ct;
+                return result;
+            });
+            this.validStartTimearr=this.StartTimearr.slice(index);
+        } else
+
+        this.validStartTimearr=[...this.StartTimearr];
+        this.Time_End = [];
+        this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+        let _from = this.Time_End.indexOf(this.Startts);
+        const eventmaxDuration=286;
+        let _to=_from+eventmaxDuration;
+        this.EndTimearr=this.Time_End.slice(_from,_to);
+        
       });
       
     } else {
       this._StartDate = null;
       this._SEndDate = null;
       this.disablePreviousTodayDate = null;
-
+      this.disablePreviousDate = null;
+      this.minDate=null;
       setTimeout(() => {
         const newDate = new Date(this.prevUpcomToday);
         this.disablePreviousTodayDate = newDate;
+        this.disablePreviousDate = newDate;
         this._StartDate = newDate;
         this._SEndDate = newDate;
+        this.minDate= newDate.toISOString().split('T')[0];
+
+        let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
+        let _currentdate=moment();
+        if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+        {
+            const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+            const index:number=this.StartTimearr.findIndex((item:any)=>{
+                const t=moment(item,'h:mm A');
+                const result=t>=ct;
+                return result;
+            });
+            this.validStartTimearr=this.StartTimearr.slice(index);
+        } else
+
+        this.validStartTimearr=[...this.StartTimearr];
+        this.Time_End = [];
+        this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+        let _from = this.Time_End.indexOf(this.Startts);
+        const eventmaxDuration=286;
+        let _to=_from+eventmaxDuration;
+        this.EndTimearr=this.Time_End.slice(_from,_to);
       });
     }
 
-    // this._StartDate = this.disablePreviousTodayDate;
-    // this._SEndDate = this.disablePreviousTodayDate;
-    // this.disablePreviousDate = this.disablePreviousTodayDate;
-    //  this.meeting_details();
+    document.getElementById("div_endDate_new").style.display = "none";
+    this.eventtaskitemtimeModal();
+
+    // document.getElementById("repeatModal").classList.add("kt-quick-active--on");
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
   }
   Close_Repeat_Meeting() {
     document.getElementById("repeatModal").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+   this.selectedrecuvalue = '0';
+
   }
 
   close_privatenote_sideBar() {
@@ -685,7 +733,7 @@ totalAcceptedCount:any;
 
     this._calenderDto.Schedule_ID = this.Schedule_ID;
 
-    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => { debugger
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => { 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       console.log(this.EventScheduledjson,'EventScheduledjson');
       
@@ -765,7 +813,7 @@ totalAcceptedCount:any;
       this.totalonlineUser = this.accessDenied.filter(u => u.onlineStatus === "Start").length;
      console.log(this.accessDenied,'accessDenied')
       // if (this.accessDenied.length > 0) { 
-      debugger 
+    
         this.racisUserIds = this.accessDenied.filter((user: any) => user.stringval.toString() == this.Current_user_ID);
         var userAccessID = this.racisUserIds.filter((data: any) => data.Schedule_Id.toString() == this.Schedule_ID);
         // var userAccessID= racisUserIds.includes(this.Current_user_ID);
@@ -1193,7 +1241,7 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
     this._calenderDto.EndTime = this.endTime == undefined ? null : formatTime(this.endTime); 
     // console.log(this._calenderDto,'time of meeting'); 
     
-    debugger
+   
     if(this.userFound){
       this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe((data) => {
        
@@ -1560,7 +1608,7 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
   }
 
 
-  AddDMS_meetingreport() { debugger
+  AddDMS_meetingreport() {
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1856,7 +1904,7 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
   selectedValue: number;
   currentEventId: any
 
-  getAllEvents() {  debugger
+  getAllEvents() { 
 
     this.currentEventId = this.selectedValue;
 
@@ -2833,8 +2881,17 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
   
       if(event.type === 'paste'){     
         this.savePastedText(event);
-        // const pastedText = event.clipboardData?.getData('text/plain') || '';
-        // this.Notes_Type= this.Notes_Type + pastedText ;
+
+        // setTimeout(() => {
+        //   if (this.Notes_Type) {
+        //     this.Notes_Type = this.Notes_Type.replace(
+        //       /<img([^>]*)>/g,
+        //       '<img$1 width="400" height="400" style="width:400px;height:400px;object-fit:contain;">'
+        //     );
+        //   }
+        // }, 0);
+
+
       }
  
     
@@ -2860,9 +2917,6 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
         (data => {
           console.log(data, 'Private notes');
           this.GetNotedata();
-          // this.GetAttendeesnotes();
-          // this.GetMeetingnotes_data();
-          // window.close();
         });
 
   }
@@ -2947,7 +3001,7 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
     this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
-      ((data: any) => { debugger
+      ((data: any) => { 
 
          if (data['Checkdatetimejson'] != '') {
           
@@ -3035,42 +3089,113 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
 
 
 
+// onFileChange(event) {
+//   if (event.target.files.length > 0) {
+//     const allowedTypes = [
+//       "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+//       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+//       "application/json", "application/xml", "application/vnd.ms-powerpoint",
+//       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+//       "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+//     ];
+
+//     var length = event.target.files.length;
+//     for (let index = 0; index < length; index++) {
+//       const file = event.target.files[index];
+//       const fileName = file.name;
+//       const contentType = file.type;
+//       if (!allowedTypes.some(type => file.type.match(type))) {
+//         // Show a sweet alert popup for unsupported file types
+//         Swal.fire({
+//           title: `This File "${fileName}" cannot be accepted!`,
+//           text: `Supported file types: Images, video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+//           //  "This file cannot be accepted!"
+//           });
+//         continue;
+//       }
+
+//       // Skip file if its name already exists in either array
+//       const fileAlreadyExists =
+//         this.Attachments_ary.some(att => att.File_Name === fileName) ||
+//         this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
+
+//       if (fileAlreadyExists) {
+//         Swal.fire({
+//           title: `File "${fileName}" Already Exists`,
+//           text: `The file "${fileName}" was not added to avoid duplication.`
+//         })
+//         continue; // Skip this file
+//       }
+
+//       // Determine file extension
+//       let fileExtension = '';
+//       if (contentType === "application/pdf") {
+//         fileExtension = ".pdf";
+//       } else if (contentType === "image/png") {
+//         fileExtension = ".png";
+//       } else if (contentType === "image/jpeg") {
+//         fileExtension = ".jpeg";
+//       } else if (contentType === "image/jpg") {
+//         fileExtension = ".jpg";
+//       }
+//       this.myFiles.push(file.name);
+
+//       var d = new Date().valueOf();
+    
+//       this._lstMultipleFiales = [...this._lstMultipleFiales, {
+//         UniqueId: d,
+//         FileName: file.name,
+//         Size: `${Math.ceil(file.size / 1024)}`,
+//         Files: file
+//       }];
+//     }
+//   }
+//   (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+// }
 onFileChange(event) {
   if (event.target.files.length > 0) {
     const allowedTypes = [
-      "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+      "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "application/json", "application/xml", "application/vnd.ms-powerpoint",
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-      "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "image/heic"   // ✅ HEIC type
     ];
 
-    var length = event.target.files.length;
+    const length = event.target.files.length;
     for (let index = 0; index < length; index++) {
-      const file = event.target.files[index];
+      let file = event.target.files[index];
       const fileName = file.name;
-      const contentType = file.type;
-      if (!allowedTypes.some(type => file.type.match(type))) {
-        // Show a sweet alert popup for unsupported file types
+      const contentType = file.type.toLowerCase();
+
+      // ✅ Fallback: check extension if contentType is empty or not matched
+      const fileExt = fileName.split('.').pop()?.toLowerCase();
+        if (!file.type && file.name.toLowerCase().endsWith(".heic")) {
+        file = new File([file], file.name, { type: "image/heic", lastModified: file.lastModified });
+      }
+      const isValid = allowedTypes.some(type => contentType.match(type)) || 
+                      (fileExt === "heic");  // ✅ allow .heic by extension
+
+      if (!isValid) {
         Swal.fire({
           title: `This File "${fileName}" cannot be accepted!`,
-          text: `Supported file types: Images, video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
-          //  "This file cannot be accepted!"
-          });
+          text: `Supported file types: Images (JPG, PNG, HEIC), video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+        });
         continue;
       }
 
-      // Skip file if its name already exists in either array
+      // Skip file if already exists
       const fileAlreadyExists =
-        this.Attachments_ary.some(att => att.File_Name === fileName) ||
+        this.Attachment12_ary.some(att => att.File_Name === fileName) ||
         this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
 
       if (fileAlreadyExists) {
         Swal.fire({
           title: `File "${fileName}" Already Exists`,
           text: `The file "${fileName}" was not added to avoid duplication.`
-        })
-        continue; // Skip this file
+        });
+        continue;
       }
 
       // Determine file extension
@@ -3083,98 +3208,187 @@ onFileChange(event) {
         fileExtension = ".jpeg";
       } else if (contentType === "image/jpg") {
         fileExtension = ".jpg";
+      } else if (contentType === "image/heic" || fileExt === "heic") {  // ✅ support by MIME or ext
+        fileExtension = ".heic";
       }
-      this.myFiles.push(file.name);
 
-      var d = new Date().valueOf();
-    
-      this._lstMultipleFiales = [...this._lstMultipleFiales, {
-        UniqueId: d,
-        FileName: file.name,
-        Size: `${Math.ceil(file.size / 1024)}`,
+      // Add file to array
+      this.myFiles.push(fileName);
+      const uniqueId = new Date().valueOf();
+
+      this._lstMultipleFiales.push({
+        UniqueId: uniqueId,
+        FileName: fileName,
+        Size: Math.round(file.size / 1024),
         Files: file
-      }];
+      });
     }
   }
-  (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+  // Reset input
+  const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
+  if (uploadFileInput) {
+    uploadFileInput.value = null;
+    uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+  }
+  (event.target as HTMLInputElement).value = '';
 }
 
 
 
 
 
-  onFileChange1(event) {
-    if (event.target.files.length > 0) {
-      const allowedTypes = [
-        "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/json", "application/xml", "application/vnd.ms-powerpoint",
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ];
+  // onFileChange1(event) {
+  //   if (event.target.files.length > 0) {
+  //     const allowedTypes = [
+  //       "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+  //       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  //       "application/json", "application/xml", "application/vnd.ms-powerpoint",
+  //       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  //       "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  //     ];
 
-      const length = event.target.files.length;
-      for (let index = 0; index < length; index++) {
-        const file = event.target.files[index];
-        const fileName = file.name;
-        const contentType = file.type;
+  //     const length = event.target.files.length;
+  //     for (let index = 0; index < length; index++) {
+  //       const file = event.target.files[index];
+  //       const fileName = file.name;
+  //       const contentType = file.type;
 
-        if (!allowedTypes.some(type => file.type.match(type))) {
-          // Show a sweet alert popup for unsupported file types
-          Swal.fire({
-            title: `This File "${fileName}" cannot be accepted!`,
-            text: `Supported file types: Images, "video/*", "audio/*", PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
-            });
-          continue;
-        }
+  //       if (!allowedTypes.some(type => file.type.match(type))) {
+  //         // Show a sweet alert popup for unsupported file types
+  //         Swal.fire({
+  //           title: `This File "${fileName}" cannot be accepted!`,
+  //           text: `Supported file types: Images, "video/*", "audio/*", PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+  //           });
+  //         continue;
+  //       }
 
-        // Skip file if its name already exists in either array
-        const fileAlreadyExists =
-          this.Attachment12_ary.some(att => att.File_Name === fileName) ||
-          this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
+  //       // Skip file if its name already exists in either array
+  //       const fileAlreadyExists =
+  //         this.Attachment12_ary.some(att => att.File_Name === fileName) ||
+  //         this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
 
-        if (fileAlreadyExists) {
-          Swal.fire({
-            title: `File "${fileName}" Already Exists`,
-            text: `The file "${fileName}" was not added to avoid duplication.`
-          })
-          continue; // Skip this file
-        }
+  //       if (fileAlreadyExists) {
+  //         Swal.fire({
+  //           title: `File "${fileName}" Already Exists`,
+  //           text: `The file "${fileName}" was not added to avoid duplication.`
+  //         })
+  //         continue; // Skip this file
+  //       }
   
-        // Determine file extension
-        let fileExtension = '';
-        if (contentType === "application/pdf") {
-          fileExtension = ".pdf";
-        } else if (contentType === "image/png") {
-          fileExtension = ".png";
-        } else if (contentType === "image/jpeg") {
-          fileExtension = ".jpeg";
-        } else if (contentType === "image/jpg") {
-          fileExtension = ".jpg";
-        }
+  //       // Determine file extension
+  //       let fileExtension = '';
+  //       if (contentType === "application/pdf") {
+  //         fileExtension = ".pdf";
+  //       } else if (contentType === "image/png") {
+  //         fileExtension = ".png";
+  //       } else if (contentType === "image/jpeg") {
+  //         fileExtension = ".jpeg";
+  //       } else if (contentType === "image/jpg") {
+  //         fileExtension = ".jpg";
+  //       }
   
-        // Add file to _lstMultipleFiales array
-        this.myFiles.push(fileName);
-        const uniqueId = new Date().valueOf();
+  //       // Add file to _lstMultipleFiales array
+  //       this.myFiles.push(fileName);
+  //       const uniqueId = new Date().valueOf();
   
-        this._lstMultipleFiales.push({
-          UniqueId: uniqueId,
-          FileName: fileName,
-          Size: file.size,
-          Files: file
-        });
+  //       this._lstMultipleFiales.push({
+  //         UniqueId: uniqueId,
+  //         FileName: fileName,
+  //         Size: file.size,
+  //         Files: file
+  //       });
+  //     }
+  //   }
+  
+  //   // Reset the input value and styling
+  //   const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
+  //   if (uploadFileInput) {
+  //     uploadFileInput.value = null;
+  //     uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+  //   }
+  //   (event.target as HTMLInputElement).value = '';
+  // }
+
+onFileChange1(event) {
+  if (event.target.files.length > 0) {
+    const allowedTypes = [
+      "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/json", "application/xml", "application/vnd.ms-powerpoint",
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "image/heic"   // ✅ HEIC type
+    ];
+
+    const length = event.target.files.length;
+    for (let index = 0; index < length; index++) {
+      let file = event.target.files[index];
+      const fileName = file.name;
+      const contentType = file.type.toLowerCase();
+
+      // ✅ Fallback: check extension if contentType is empty or not matched
+      const fileExt = fileName.split('.').pop()?.toLowerCase();
+        if (!file.type && file.name.toLowerCase().endsWith(".heic")) {
+        file = new File([file], file.name, { type: "image/heic", lastModified: file.lastModified });
       }
-    }
-  
-    // Reset the input value and styling
-    const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
-    if (uploadFileInput) {
-      uploadFileInput.value = null;
-      uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
-    }
-    (event.target as HTMLInputElement).value = '';
-  }
+      const isValid = allowedTypes.some(type => contentType.match(type)) || 
+                      (fileExt === "heic");  // ✅ allow .heic by extension
 
+      if (!isValid) {
+        Swal.fire({
+          title: `This File "${fileName}" cannot be accepted!`,
+          text: `Supported file types: Images (JPG, PNG, HEIC), video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+        });
+        continue;
+      }
+
+      // Skip file if already exists
+      const fileAlreadyExists =
+        this.Attachment12_ary.some(att => att.File_Name === fileName) ||
+        this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
+
+      if (fileAlreadyExists) {
+        Swal.fire({
+          title: `File "${fileName}" Already Exists`,
+          text: `The file "${fileName}" was not added to avoid duplication.`
+        });
+        continue;
+      }
+
+      // Determine file extension
+      let fileExtension = '';
+      if (contentType === "application/pdf") {
+        fileExtension = ".pdf";
+      } else if (contentType === "image/png") {
+        fileExtension = ".png";
+      } else if (contentType === "image/jpeg") {
+        fileExtension = ".jpeg";
+      } else if (contentType === "image/jpg") {
+        fileExtension = ".jpg";
+      } else if (contentType === "image/heic" || fileExt === "heic") {  // ✅ support by MIME or ext
+        fileExtension = ".heic";
+      }
+
+      // Add file to array
+      this.myFiles.push(fileName);
+      const uniqueId = new Date().valueOf();
+
+      this._lstMultipleFiales.push({
+        UniqueId: uniqueId,
+        FileName: fileName,
+        Size: Math.round(file.size / 1024),
+        Files: file
+      });
+    }
+  }
+  // Reset input
+  const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
+  if (uploadFileInput) {
+    uploadFileInput.value = null;
+    uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+  }
+  (event.target as HTMLInputElement).value = '';
+}
 
 
 
@@ -4635,7 +4849,7 @@ assignOptions:any = false;
     this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
 
     this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
-      ((data: any) => {
+      ((data: any) => { 
         this.exact_start = (data['Start_time']);
         this.agendasList = JSON.parse(data['Agendas']);
 
@@ -4655,9 +4869,9 @@ assignOptions:any = false;
 
         if(this.agendasList != null){
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
-              if (this.agendasList.length != this.Agendas_List.length) {
+              if (this.agendasList.length != this.Agendas_List.length) { 
                 const result=this.Agendas_List.length-this.agendasList.length;
-                this.Agendas_List = [...this.agendasList];
+                this.Agendas_List = [...this.agendasList];  
                 this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
                 this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
               
@@ -4695,7 +4909,7 @@ assignOptions:any = false;
         this.status_type = '';
         this.NotesCount = JSON.parse(data['NotesCount']);
 
-        this.NotesCount.forEach(item => {
+        this.NotesCount.forEach(item => {  
           const i = this.notescount.findIndex(item1 => item1.agendaid == item.AgendaId);
           if (i > -1)
             this.notescount[i].count += 1;
@@ -4704,25 +4918,25 @@ assignOptions:any = false;
 
         this.TaskCount = JSON.parse(data['TaskCount']);
         
-        this.TaskCount.forEach(item => {
+        this.TaskCount.forEach(item => { 
           const i = this.taskcount.findIndex(item1 => item1.agendaid == item.Agenda_Id);
           if (i > -1)
             this.taskcount[i].count += 1;
         });    // 2. update new task count data.
          
        
-        this.totalAcceptedCount = JSON.parse(data['AssignedCount']);
-        console.log( this.totalAcceptedCount ,' this.totalAcceptedCount ',data)
+     
        
         this.totalNotesCount=this.notescount.reduce((sum,item)=>{
              return sum+item.count;
         },0)
-
+       
         this.totalTasksCount=this.taskcount.reduce((sum,item)=>{
           return sum+item.count;
          },0)
-  
-
+        
+        this.totalAcceptedCount = JSON.parse(data['AssignedCount']);
+        
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
 
@@ -4760,7 +4974,7 @@ assignOptions:any = false;
        
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
-         debugger
+     
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingStarted = true;
@@ -4769,7 +4983,7 @@ assignOptions:any = false;
             this.hasAttendeesresumeMeeting = false;
           }
           else if (this.showAttendeeNotify=='2' && !this.hasAttendeesPauseMeeting) {
-          debugger
+         
               this.pauseTimer(this.LastPauseTime,this.exact_start,this.pausetime)
               this.InsertAttendeeMeetingTime();
               this.hasAttendeesPauseMeeting = true;
@@ -4780,7 +4994,7 @@ assignOptions:any = false;
         
           }
             else if (this.showAttendeeNotify=='3' && !this.hasAttendeesresumeMeeting) {
-            debugger 
+          
               this.resumeTimer(this.exact_start,this.pausetime);
               this.InsertAttendeeMeetingTime();      
               this.hasAttendeesresumeMeeting = true;
@@ -8959,7 +9173,7 @@ async downloadSelectedFiles() {
 
 
 
-  submitEventToRepeat() {
+  submitEventToRepeat() { debugger
     this._EndDate = this.EventScheduledjson[0]['End_date'];
 
     const input_date = moment(this._StartDate, 'YYYY-MM-DD');
@@ -8980,34 +9194,63 @@ async downloadSelectedFiles() {
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
     var start = moment(this.minDate);
-
+    const _arraytext = [];
     if (this.selectedrecuvalue == "0") {
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
-    }
+      
+      if(this._StartDate == this.disablePreviousTodayDate){
+        let startDate = new Date(this._StartDate);
+        this.AllDatesSDandED = [{
+            Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
+            Day: startDate.toLocaleString('en-US', { weekday: 'short' }), // Get short day name
+            DayNum: startDate.getDate().toString(),
+            EndTime: this.Endtms,
+            IsActive: 1,
+            StartTime : this.Startts
+          }];
+      
+        this.daysSelectedII = this.AllDatesSDandED ;
+        this._SEndDate =this._StartDate.toISOString().split('T')[0];
+        this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0));
+  
+       }
+       }else if (this.selectedrecuvalue == "1") {
+        this.daysSelectedII = this.AllDatesSDandED;
+      }
+      else if (this.selectedrecuvalue == "2") {
+        if (this.dayArr.filter(x => x.checked == true).length == 0) {
+          alert('Please select day');
+          return false;
+        }
+        for (let index = 0; index < this.dayArr.length; index++) {
+          if (this.dayArr[index].checked) {
+            const day = this.dayArr[index].value;
+            _arraytext.push(day);
+            var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+            this.daysSelectedII = this.daysSelectedII.concat(newArray);
+          }
+        }
+        if (this.daysSelectedII.length == 0) {
+          alert('please select valid day');
+        }
+      }
+      else if (this.selectedrecuvalue == "3") {
 
-   // new code start 69
-
-   if(this._StartDate == this.disablePreviousTodayDate){
-    let startDate = new Date(this._StartDate);
-    this.AllDatesSDandED = [{
-        Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
-        Day: startDate.toLocaleString('en-US', { weekday: 'short' }), // Get short day name
-        DayNum: startDate.getDate().toString(),
-        EndTime: this.Endtms,
-        IsActive: 1,
-        StartTime : this.Startts
-       }];
-   
-    this.daysSelectedII = this.AllDatesSDandED ;
-    this._SEndDate =this._StartDate.toISOString().split('T')[0];
-    this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0));
-   
-   }
-
-    // new code end 69
-
+        if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+          alert('Please select day');
+          return false;
+        }
+        for (let index = 0; index < this.MonthArr.length; index++) {
+          if (this.MonthArr[index].checked == true) {
+            const day = this.MonthArr[index].value;
+            _arraytext.push(day);
+            var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+            this.daysSelectedII = this.daysSelectedII.concat(newArray);
+          }
+        }
+      }
 
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
@@ -9054,7 +9297,7 @@ async downloadSelectedFiles() {
         element[vPending] = 0;
 
         var vRecurrence = "Recurrence";
-        element[vRecurrence] = "0";
+        element[vRecurrence] =  this.selectedrecuvalue;
 
         var vRecurrence_value = "Recurrence_values";
         element[vRecurrence_value] = "";
@@ -9096,7 +9339,7 @@ async downloadSelectedFiles() {
         element[vDescription] = this.EventScheduledjson[0].Description;
 
         var vSubtask = "Subtask";
-        element[vSubtask] = "";
+        element[vSubtask] = ""; 
 
         var vEventNumber = "EventNumber";
         element[vEventNumber] = this.EventScheduledjson[0].EventNumber;
@@ -11362,7 +11605,7 @@ isMini = false;
       document.getElementById("eventtaskitemtimeModal").classList.add("show");
       document.getElementById("eventtaskitemtimeModalBackdrop").style.display = "block";
       document.getElementById("eventtaskitemtimeModalBackdrop").classList.add("show");
-  
+
       this.selectedrecuvalue1=this.selectedrecuvalue;
       this.dayArr1=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
       this.MonthArr1=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
@@ -11400,7 +11643,7 @@ isMini = false;
         document.getElementById("eventtaskitemtimeModal").classList.remove("show");
         document.getElementById("eventtaskitemtimeModalBackdrop").style.display = "none";
         document.getElementById("eventtaskitemtimeModalBackdrop").classList.remove("show");
-    
+        this.repeatBtn = false;
         document.getElementById("div_endDate_new").style.display = "none";
         document.getElementById("weekly_121_new").style.display = "none";
         document.getElementById("Monthly_121_new").style.display = "none";

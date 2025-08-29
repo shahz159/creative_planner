@@ -267,9 +267,9 @@ onPaste(event: ClipboardEvent): void {
     this.loadingDMS = false;
     this.Current_user_ID = localStorage.getItem('EmpNo');
   
-     this.getDayReportSummary();
+    this.getDayReportSummary();
     this.getEventsForWeeks(0);
-    this.getTeam_List(0)
+    this.getTeam_List(0);
    
     this.scheduleId_UrlParams=this.activatedRoute.snapshot.queryParamMap.get('calenderId'); 
 
@@ -633,7 +633,7 @@ onPaste(event: ClipboardEvent): void {
     document.getElementById("customEventModal").classList.remove("show");
     document.getElementById("customEventModalBackdrop").style.display = "none";
     document.getElementById("customEventModalBackdrop").classList.remove("show");
-
+     this.selectedrecuvalue = "0";     
     $('#propse11').removeClass('show');
     // this.router.navigate(['/backend/StreamCalendar']);
   }
@@ -1025,8 +1025,8 @@ propose_date:any;
 proposeStartTimes:any;
 proposeEndTimes:any;
 repeatStartDate:any;
-repeatStartts:any;
-repeatEndtms:any;
+// repeatStartts:any;
+// repeatEndtms:any;
 earlyDate:boolean=false;
 deleteTask:boolean=false;
 SearchOfPendingItem: any;
@@ -1168,69 +1168,113 @@ updateAgenda(index: number) {
 
 
 // onFileChange(event) {
+ 
 //   if (event.target.files.length > 0) {
-//     var length = event.target.files.length;
+//     const allowedTypes = [
+//       "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+//       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+//       "application/json", "application/xml", "application/vnd.ms-powerpoint",
+//       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+//       "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+//     ];
+
+//     const length = event.target.files.length;
 //     for (let index = 0; index < length; index++) {
 //       const file = event.target.files[index];
-//       var contentType = file.type;
+//       const fileName = file.name;
+//       const contentType = file.type;
+//       if (!allowedTypes.some(type => file.type.match(type))) {
+//         // Show a sweet alert popup for unsupported file types
+//         Swal.fire({
+//           title: `This File "${fileName}" cannot be accepted!`,
+//           text: `Supported file types: Images, video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+//           });
+//         continue;
+//       }
+
+
+//       // Skip file if its name already exists in either array
+//       const fileAlreadyExists =
+//         this.Attachment12_ary.some(att => att.File_Name === fileName) ||
+//         this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
+
+//       if (fileAlreadyExists) {
+//         Swal.fire({
+//           title: `File "${fileName}" Already Exists`,
+//           text: `The file "${fileName}" was not added to avoid duplication.`
+//         })
+//         continue; // Skip this file
+//       }
+
+//       // Determine file extension
+//       let fileExtension = '';
 //       if (contentType === "application/pdf") {
-//         contentType = ".pdf";
+//         fileExtension = ".pdf";
+//       } else if (contentType === "image/png") {
+//         fileExtension = ".png";
+//       } else if (contentType === "image/jpeg") {
+//         fileExtension = ".jpeg";
+//       } else if (contentType === "image/jpg") {
+//         fileExtension = ".jpg";
 //       }
-//       else if (contentType === "image/png") {
-//         contentType = ".png";
-//       }
-//       else if (contentType === "image/jpeg") {
-//         contentType = ".jpeg";
-//       }
-//       else if (contentType === "image/jpg") {
-//         contentType = ".jpg";
-//       }
-//       this.myFiles.push(event.target.files[index].name);
-//       // alert(this.myFiles.length);
-    
-//       //_lstMultipleFiales
-//       var d = new Date().valueOf();
-   
-//       this._lstMultipleFiales = [...this._lstMultipleFiales, {
-//         UniqueId: d,
-//         FileName: event.target.files[index].name,
-//         Size: event.target.files[index].size,
-//         Files: event.target.files[index]
-//       }];
+
+//       // Add file to _lstMultipleFiales array
+//       this.myFiles.push(fileName);
+//       const uniqueId = new Date().valueOf();
+
+//       this._lstMultipleFiales.push({
+//         UniqueId: uniqueId,
+//         FileName: fileName,
+//         Size: file.size,
+//         Files: file
+//       });
 //     }
 //   }
 
-//   const uploadFileInput = (<HTMLInputElement>document.getElementById("uploadFile"));
-//   uploadFileInput.value = null;
-//   uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+//   // Reset the input value and styling
+//   const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
+//   if (uploadFileInput) {
+//     uploadFileInput.value = null;
+//     uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+//   }
+//   (event.target as HTMLInputElement).value = '';
 // }
+
+
 onFileChange(event) {
- 
   if (event.target.files.length > 0) {
     const allowedTypes = [
-      "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+      "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "application/json", "application/xml", "application/vnd.ms-powerpoint",
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-      "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "image/heic"   // ✅ HEIC type
     ];
 
     const length = event.target.files.length;
     for (let index = 0; index < length; index++) {
-      const file = event.target.files[index];
+      let file = event.target.files[index];
       const fileName = file.name;
-      const contentType = file.type;
-      if (!allowedTypes.some(type => file.type.match(type))) {
-        // Show a sweet alert popup for unsupported file types
+      const contentType = file.type.toLowerCase();
+
+      // ✅ Fallback: check extension if contentType is empty or not matched
+      const fileExt = fileName.split('.').pop()?.toLowerCase();
+        if (!file.type && file.name.toLowerCase().endsWith(".heic")) {
+        file = new File([file], file.name, { type: "image/heic", lastModified: file.lastModified });
+      }
+      const isValid = allowedTypes.some(type => contentType.match(type)) || 
+                      (fileExt === "heic");  // ✅ allow .heic by extension
+
+      if (!isValid) {
         Swal.fire({
           title: `This File "${fileName}" cannot be accepted!`,
-          text: `Supported file types: Images, video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
-          });
+          text: `Supported file types: Images (JPG, PNG, HEIC), video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+        });
         continue;
       }
 
-
-      // Skip file if its name already exists in either array
+      // Skip file if already exists
       const fileAlreadyExists =
         this.Attachment12_ary.some(att => att.File_Name === fileName) ||
         this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
@@ -1239,8 +1283,8 @@ onFileChange(event) {
         Swal.fire({
           title: `File "${fileName}" Already Exists`,
           text: `The file "${fileName}" was not added to avoid duplication.`
-        })
-        continue; // Skip this file
+        });
+        continue;
       }
 
       // Determine file extension
@@ -1253,22 +1297,23 @@ onFileChange(event) {
         fileExtension = ".jpeg";
       } else if (contentType === "image/jpg") {
         fileExtension = ".jpg";
+      } else if (contentType === "image/heic" || fileExt === "heic") {  // ✅ support by MIME or ext
+        fileExtension = ".heic";
       }
 
-      // Add file to _lstMultipleFiales array
+      // Add file to array
       this.myFiles.push(fileName);
       const uniqueId = new Date().valueOf();
 
       this._lstMultipleFiales.push({
         UniqueId: uniqueId,
         FileName: fileName,
-        Size: file.size,
+        Size: Math.round(file.size / 1024),
         Files: file
       });
     }
   }
-
-  // Reset the input value and styling
+  // Reset input
   const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
   if (uploadFileInput) {
     uploadFileInput.value = null;
@@ -1276,6 +1321,11 @@ onFileChange(event) {
   }
   (event.target as HTMLInputElement).value = '';
 }
+
+
+
+
+
 
 
 
@@ -1647,7 +1697,7 @@ onDMSFilter(){
 }
 
 onParticipantFilter(){ 
-  const fresult=this._EmployeeListForDropdown.filter((_emp:any)=>{ debugger
+  const fresult=this._EmployeeListForDropdown.filter((_emp:any)=>{ 
      const isEmpIn:boolean=(!this.basedOnFilter.bycompany)||_emp.Emp_Comp_No===this.basedOnFilter.bycompany;
      let includeEmp:boolean=false;
      if(isEmpIn)
@@ -2779,7 +2829,7 @@ selectAction:any;
 
 
 
-  OnSubmitSchedule() { 
+  OnSubmitSchedule() {  debugger
 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
@@ -2882,7 +2932,7 @@ selectAction:any;
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
-    if (finalarray.length > 0) {
+    if (finalarray.length > 0) { debugger
       finalarray.forEach(element => { 
        this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this._StartDate);
@@ -3049,7 +3099,7 @@ selectAction:any;
         frmData.append("Attachment", "true");
         this._attachmentValue = 1;
 
-        for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+        for (var i = 0; i < this._lstMultipleFiales.length; i++) { 
           frmData.append("files", this._lstMultipleFiales[i].Files);
         }
         const xmlDoc = document.implementation.createDocument('', '', null);
@@ -3169,20 +3219,6 @@ selectAction:any;
             
                       });
                     }
-
-                    // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    // (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
-                    // this._lstMultipleFiales = [];
-                    // // empty(this._lstMultipleFiales);
-                    // // alert(this._lstMultipleFiales.length);
-                    // setTimeout(() => {
-                    //   this.progress = 0;
-                    // }, 1500);
-
-                    // (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                    // (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-                    // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                    // document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                 }
               }
             )
@@ -3897,7 +3933,7 @@ Insert_indraft() {
     frmData.append("Attachment", "true");
     this._attachmentValue = 1;
 
-    for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+    for (var i = 0; i < this._lstMultipleFiales.length; i++) { 
       frmData.append("files", this._lstMultipleFiales[i].Files);
     }
     const xmlDoc = document.implementation.createDocument('', '', null);
@@ -4121,9 +4157,9 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       this._StartDate=this.EventScheduledjson[0].Schedule_date;
       this.repeatStartDate=this._StartDate;
       this.Startts=this.EventScheduledjson[0].St_Time;
-      this.repeatStartts=this.Startts;
+      // this.repeatStartts=this.Startts;
       this.Endtms=this.EventScheduledjson[0].Ed_Time;
-      this.repeatEndtms=this.Endtms
+      // this.repeatEndtms=this.Endtms
       this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
 
 
@@ -5447,7 +5483,7 @@ RecurrValueMonthly:boolean=false;
           frmData.append("Attachment", "true");
           this._attachmentValue = 1;
     
-          for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+          for (var i = 0; i < this._lstMultipleFiales.length; i++) { 
             frmData.append("files", this._lstMultipleFiales[i].Files);
           }
         const xmlDoc = document.implementation.createDocument('', '', null);
@@ -5839,10 +5875,10 @@ sweet_end() {
 
 
 
-// onCustomBtnClicked(){
-// $('#propse11').removeClass('show');
-//   this.repeatEvent();
-// }
+onCustomBtnClicked(){
+$('#propse11').removeClass('show');
+  this.repeatEvent();
+}
 
 
 repeatDate:any;
@@ -6110,9 +6146,12 @@ proposenewtime() {
 
 
 repeatEventTime(){
-  this.repeatStartDate=this._StartDate;
-  this.repeatStartts=this.Startts;
-  this.repeatEndtms=this.Endtms
+  // this.repeatStartDate=this._StartDate;
+  //  this.repeatStartts=this.Startts;
+  // this.repeatEndtms=this.Endtms
+  this._StartDate=this._StartDate
+  this.Startts=this.Startts;
+  this.Endtms=this.Endtms
   this.Repeat_date_time_menu_close();
 }
 
@@ -6120,9 +6159,10 @@ repeatEventTime(){
 
 
 
- submitEventToRepeat(){ 
+ submitEventToRepeat(){ debugger
 
-  const input_date=moment(this.repeatStartDate,'YYYY-MM-DD');
+  // const input_date=moment(this.repeatStartDate,'YYYY-MM-DD');
+  const input_date=moment(this._StartDate,'YYYY-MM-DD');
   const current_date=moment(moment().format('YYYY-MM-DD'),'YYYY-MM-DD');
   if(input_date<current_date){
      this.earlyDate=true;
@@ -6130,10 +6170,10 @@ repeatEventTime(){
   }
 
    if(this.privateMeeting == true){
-          this.MasterCode = null;
-          this.ngEmployeeDropdown = null;
-          this.Portfolio = null;
-          this.SelectDms = null;
+      this.MasterCode = null;
+      this.ngEmployeeDropdown = null;
+      this.Portfolio = null;
+      this.SelectDms = null;
     } 
 
 
@@ -6141,32 +6181,68 @@ repeatEventTime(){
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
     var start = moment(this.minDate);
-  
+    const _arraytext = [];
     if (this.selectedrecuvalue == "0") {
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
-    }
-  
+   
+      if(this._StartDate == this.disablePreviousTodayDate){
+        let startDate = new Date(this._StartDate);
+        this.AllDatesSDandED = [{
+            Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
+            Day: startDate.toLocaleString('en-US', { weekday: 'short' }), // Get short day name
+            DayNum: startDate.getDate().toString(),
+            EndTime: this.Endtms,
+            IsActive: 1,
+            StartTime : this.Startts
+          }];
+      
+        this.daysSelectedII = this.AllDatesSDandED ;
+        this._SEndDate =this._StartDate.toISOString().split('T')[0];
+        this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0));
+      
+      }
+      }else if (this.selectedrecuvalue == "1") {
+        this.daysSelectedII = this.AllDatesSDandED;
+      }
+      else if (this.selectedrecuvalue == "2") {
+        if (this.dayArr.filter(x => x.checked == true).length == 0) {
+          alert('Please select day');
+          return false;
+        }
+        for (let index = 0; index < this.dayArr.length; index++) {
+          if (this.dayArr[index].checked) {
+            const day = this.dayArr[index].value;
+            _arraytext.push(day);
+            var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+            this.daysSelectedII = this.daysSelectedII.concat(newArray);
+          }
+        }
+        if (this.daysSelectedII.length == 0) {
+          alert('please select valid day');
+        }
+      }
+      else if (this.selectedrecuvalue == "3") {
 
+        if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+          alert('Please select day');
+          return false;
+        }
+        for (let index = 0; index < this.MonthArr.length; index++) {
+          if (this.MonthArr[index].checked == true) {
+            const day = this.MonthArr[index].value;
+            _arraytext.push(day);
+            var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+            this.daysSelectedII = this.daysSelectedII.concat(newArray);
+          }
+        }
+      }
+   
+ 
+  
   // new code start 69
 
-  if(this._StartDate == this.disablePreviousTodayDate){
-    let startDate = new Date(this._StartDate);
-    this.AllDatesSDandED = [{
-        Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
-        Day: startDate.toLocaleString('en-US', { weekday: 'short' }), // Get short day name
-        DayNum: startDate.getDate().toString(),
-        EndTime: this.Endtms,
-        IsActive: 1,
-        StartTime : this.Startts
-       }];
-   
-    this.daysSelectedII = this.AllDatesSDandED ;
-    this._SEndDate =this._StartDate.toISOString().split('T')[0];
-    this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0));
-   
-   }
 
     // new code end 69
 
@@ -6174,9 +6250,11 @@ repeatEventTime(){
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { 
-        this.repeatStartDate = moment(this.repeatStartDate).format("YYYY-MM-DD").toString();
-        const date1: Date = new Date(this.repeatStartDate);
+      finalarray.forEach(element => {  debugger
+        // this.repeatStartDate = moment(this.repeatStartDate).format("YYYY-MM-DD").toString();
+        // const date1: Date = new Date(this.repeatStartDate);
+         this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
+        const date1: Date = new Date(this._StartDate);
         const date2: Date = new Date(this._SEndDate);
 
         date1.setHours(0,0,0,0);
@@ -6185,7 +6263,8 @@ repeatEventTime(){
         const diffInMs: number = date2.getTime() - date1.getTime();
   
         const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        if (this.repeatStartts.includes("PM") && this.repeatEndtms.includes("AM")) {
+        // if (this.repeatStartts.includes("PM") && this.repeatEndtms.includes("AM")) {
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
           var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
         }
         else{
@@ -6197,10 +6276,12 @@ repeatEventTime(){
         element[SEndDates] = (dd.format(format2));
   
         var vStartTime = "StartTime";
-        element[vStartTime] = this.repeatStartts;
-  
+        // element[vStartTime] = this.repeatStartts;
+        element[vStartTime] = this.Startts
+
         var vEndTime = "EndTime";
-        element[vEndTime] = this.repeatEndtms;
+        // element[vEndTime] = this.repeatEndtms;
+         element[vEndTime] = this.Endtms;
   
         var vEnd_date = "End_date";
         element[vEnd_date] = this._EndDate;
@@ -6212,7 +6293,7 @@ repeatEventTime(){
         element[vPending] = 0;
   
         var vRecurrence = "Recurrence";
-        element[vRecurrence] = "0";
+        element[vRecurrence] = this.selectedrecuvalue;
   
         var vRecurrence_value = "Recurrence_values";
         element[vRecurrence_value] = "";
@@ -6278,7 +6359,7 @@ repeatEventTime(){
         this._calenderDto.Schedule_ID = 0;
       }
       this._calenderDto.draftid = this.draftid;
-      console.log(this._calenderDto)
+      console.log(this._calenderDto,"single Repeat events")
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => { 
           this._Message = data['message'];
@@ -6561,8 +6642,8 @@ filterPending(type: 'date' | 'meeting'): void {
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount']; 
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
-        this.repeatStartts=this.Startts;
-        this.repeatEndtms=this.Endtms;
+        // this.repeatStartts=this.Startts;
+        // this.repeatEndtms=this.Endtms;
 
         // console.log(this.EventScheduledjson, "Testing12");
 
@@ -6826,39 +6907,45 @@ prevUpcomToday = new Date();
 
   disableRepeatMeetingDate(){
 
-    if (new Date(this.prevUpcomToday).toDateString() === new Date(this._StartDate).toDateString()) {
+    if (new Date(this.prevUpcomToday).toDateString() === new Date(this.repeatStartDate).toDateString()) {
       const nextDay = new Date();
       nextDay.setDate(nextDay.getDate() + 1);
-
+      this.disablePreviousDate = null;
       this._StartDate = null;
-      this.repeatStartDate = null;
+      // this.repeatStartDate = null;
       this._SEndDate = null;
-
+      this.minDate=null;
       this.disablePreviousTodayDate = null;
       
       // Let Angular update bindings first
-      setTimeout(() => {
+      setTimeout(() => { debugger
         this.disablePreviousTodayDate = nextDay;
+        this.disablePreviousDate  = nextDay;
         this._StartDate = nextDay;
-        this.repeatStartDate = nextDay;
+        this.minDate= nextDay.toISOString().split('T')[0];
+        // this.repeatStartDate = nextDay;
         this._SEndDate = nextDay;
       });
       
     } else {
       this._StartDate = null;
-      this.repeatStartDate = null;
+      // this.repeatStartDate = null;
+       this.minDate=null;
       this._SEndDate = null;
       this.disablePreviousTodayDate = null;
+      this.disablePreviousDate = null;
 
-      setTimeout(() => {
+      setTimeout(() => { debugger
         const newDate = new Date(this.prevUpcomToday);
         this.disablePreviousTodayDate = newDate;
+         this.disablePreviousDate = newDate;
         this._StartDate = newDate;
-        this.repeatStartDate = newDate;
+         this.minDate= newDate.toISOString().split('T')[0];
+        // this.repeatStartDate = newDate;
         this._SEndDate = newDate;
       });
     }
-
+     document.getElementById("div_endDate_new").style.display = "none";
   }
 
 
@@ -7001,9 +7088,9 @@ getDayReportSummary(){
       }
       this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
       .filter(key => this.daySummaryReport[key] > 0).length;
-       console.log("daySummaryReport:",this.daySummaryReport);
       if(this.daySummaryReport['PendingTasks']){
        this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
+
       console.log("daySummaryReport:",this.daySummaryReport);
       }
       this.GetHasAcknowledgeService()        

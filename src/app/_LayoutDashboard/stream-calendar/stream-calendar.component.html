@@ -3365,7 +3365,7 @@
                                 <div class="create-event-file-main">
                                     <div id="create-event-file-inner" class="create-event-file-inner">
 
-                                        <input (change)="onFileChange($event)" accept="image/*,, video/*, audio/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls" id="customFile" type="file" multiple="multiple" name="files[]" 
+                                        <input (change)="onFileChange($event)" accept="image/*, video/*, audio/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls, .heic" id="customFile" type="file" multiple="multiple" name="files[]" 
                                         class="create-event-file-input">
 
                                         <label for="customFile" class="create-event-file-input-label">
@@ -3376,7 +3376,7 @@
                                     </div>
                                 </div>
                                 <div class="error-notification mt-1" >
-                                    <span  class="notif-massage">*Supported file types: Images, Video, Audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
+                                    <span  class="notif-massage">*Supported file types: Images, Video, Audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel, Heic.</span>
                                 </div>
                                 <ul class="create-event-file-list">
                                     <li  *ngFor='let url of _lstMultipleFiales'>
@@ -3581,200 +3581,7 @@
 </div>
 <!-- Create Event Task Modal End -->
 
-<!-- Create Event Task Item Time Modal Start -->
-<div class="modal-backdrop fade" id="eventtaskitemtimeModalBackdrop" style="display: none"></div>
-<div class="modal fade" id="eventtaskitemtimeModal" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="eventtaskitemtimeModalLabel" aria-modal="true" style="display: none">
-    <div class="modal-dialog modal-sm modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-            <div class="task-time-modal-calendar">
-                <mat-card class="calendar-card">
-                    <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
-                </mat-card>
-            </div>
-            <hr>
-            <div class="modal-time-item">
-                <div class="modal-time-item-icon">
-                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> <path d="M12 5C11.4477 5 11 5.44771 11 6V12.4667C11 12.4667 11 12.7274 11.1267 12.9235C11.2115 13.0898 11.3437 13.2343 11.5174 13.3346L16.1372 16.0019C16.6155 16.278 17.2271 16.1141 17.5032 15.6358C17.7793 15.1575 17.6155 14.5459 17.1372 14.2698L13 11.8812V6C13 5.44772 12.5523 5 12 5Z" fill="currentColor"></path> </g></svg>
-                </div>
-                <div class="modal-time-item-control">
-                    <ng-select  [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
-                    placeholder="Start time" [(ngModel)]="Startts" (change)="addstarttime()">
-                         <ng-option  *ngFor="let item of validStartTimearr; let i=index" [value]="item">
-                            {{item}}
-                         </ng-option>
-                    </ng-select>
-                     <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
-                </div>
-                <div class="modal-time-item-control">
-                    <ng-select  placeholder="End time" [ngClass]="{'error-vd': !Endtms&&notProvided}"  (open)="onfocus($event)"  [(ngModel)]="Endtms" >
-                        <ng-option *ngFor="let item1 of EndTimearr; let i = index" [value]="item1">
-                            {{item1}}
-                            ({{i*5>60?((i*5/60).toFixed(1)+' hrs'):(i*5+' mins')}})
-                        </ng-option>
-                    </ng-select>
-                    <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
-                </div>
-            </div>
-            <div class="modal-time-item">
-                <div class="modal-time-item-icon">
-                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 2L14 5M14 5L11 8M14 5H6.8C5.11984 5 4.27976 5 3.63803 5.32698C3.07354 5.6146 2.6146 6.07354 2.32698 6.63803C2 7.27976 2 8.11984 2 9.8V15.5C2 15.9644 2 16.1966 2.02567 16.3916C2.2029 17.7378 3.26222 18.7971 4.60842 18.9743C4.80337 19 5.03558 19 5.5 19M10 19H17.2C18.8802 19 19.7202 19 20.362 18.673C20.9265 18.3854 21.3854 17.9265 21.673 17.362C22 16.7202 22 15.8802 22 14.2V8.5C22 8.03558 22 7.80337 21.9743 7.60842C21.7971 6.26222 20.7378 5.2029 19.3916 5.02567C19.1966 5 18.9644 5 18.5 5M10 19L13 22M10 19L13 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                </div>
-                <div class="modal-time-item-control"  id="div_recurrence">
-                    <mat-select name="Select Type" placeholder="Do not repeat"
-                    [(value)]="selectedrecuvalue1" class="form-control" (selectionChange)="onRecurrenceTypeChange($event);" >
 
-                    <mat-option value="0">Do not repeat</mat-option>
-                    <mat-option value="1">Daily</mat-option>
-                    <mat-option value="2">Weekly</mat-option>
-                    <mat-option value="3">Monthly</mat-option>
-
-                   </mat-select>
-
-                    <!-- <ng-select  placeholder="Do not repeat"    [(ngModel)]="selectedrecuvalue1" class="form-control"  (selectionChange)="onRecurrenceTypeChange($event)" >
-                        <ng-option [value]="0">Do not repeat</ng-option>
-                        <ng-option [value]="1">Daily</ng-option>
-                        <ng-option [value]="2">Weekly</ng-option>
-                        <ng-option [value]="3">Monthly</ng-option>
-                    </ng-select> -->
-
-                </div>
-            </div>
-            <div id="weekly_121_new" style="display: none;" class="form-group">
-                <label class="kt-label">Days</label>
-                <div class="pt-1">
-                  <div class="d-flex">
-                    <ng-container *ngFor="let item of dayArr1">
-                        <div
-                            [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
-                            <input (change)="selectedDay($event)" id="{{item.value}}"
-                                type="checkbox" name="DaysChk" value="{{item.value}}"
-                                class="rep-chk" />
-                            {{item.Day}}
-                        </div>
-                    </ng-container>
-                    <!-- <div class="repeat-day active"><input type="checkbox" name="DaysChk" class="repeat-check" id="Sun" value="Sun"> S </div>
-                      
-                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Mon" value="Mon"> M </div>
-                        
-                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Tue" value="Tue"> T </div>
-                      
-                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Wed" value="Wed"> W </div>
-                      
-                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Thu" value="Thu"> Th </div>
-                      
-                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Fri" value="Fri"> Fr </div>
-                      
-                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Sat" value="Sat"> Sa </div> -->
-                  </div>
-                  <span *ngIf="notProvided1==='dayarr1'" class="fs-7" style="color:red">choose a day.</span>
-                </div>
-              </div>
-              <div id="Monthly_121_new" style="display: none;" class="form-group">
-                <label class="kt-label">Days</label>
-                <div class="pt-1">
-                  <div class="d-flex flex-wrap">
-                    <ng-container *ngFor="let item of MonthArr1">
-                        <div
-                            [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
-                            <input (change)="selectmonthlydays($event)" id="{{item.value}}"
-                                type="checkbox" name="monthChk" value="{{item.value}}"
-                                class="rep-chk" />
-                            {{item.Day}}
-                        </div>
-                    </ng-container>
-                    <!-- <div class="repeat-day active"><input type="checkbox" name="monthChk" class="repeat-check" id="01" value="01"> 01 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="02" value="02"> 02 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="03" value="03"> 03 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="04" value="04"> 04 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="05" value="05"> 05 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="06" value="06"> 06 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="07" value="07"> 07 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="08" value="08"> 08 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="09" value="09"> 09 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="10" value="10"> 10 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="11" value="11"> 11 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="12" value="12"> 12 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="13" value="13"> 13 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="14" value="14"> 14 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="15" value="15"> 15 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="16" value="16"> 16 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="17" value="17"> 17 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="18" value="18"> 18 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="19" value="19"> 19 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="20" value="20"> 20 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="21" value="21"> 21 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="22" value="22"> 22 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="23" value="23"> 23 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="24" value="24"> 24 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="25" value="25"> 25 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="26" value="26"> 26 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="27" value="27"> 27 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="28" value="28"> 28 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="29" value="29"> 29 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="30" value="30"> 30 </div>
-                    
-                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="31" value="31"> 31 </div> -->
-                    
-                  </div>
-                  <span *ngIf="notProvided1==='montharr1'" class="fs-7" style="color:red">choose a day.</span>
-                </div>
-              </div>
-            <div class="mb-4" id="div_endDate_new">
-                <label class="kt-label">Recurrence end date</label>
-                <div class="endtill-date">
-                    <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()"  [(ngModel)]="_EndDate1"  placeholder="End Date"
-                            class="form-control" style="padding-left: 4rem !important;"    [min]="today">
-                        <span class="endtill-date-icon">
-                            <mat-datepicker-toggle matSuffix [for]="div_endDatepicker"></mat-datepicker-toggle>
-                            <mat-datepicker #div_endDatepicker></mat-datepicker>
-                        </span>
-                        <span *ngIf="notProvided1==='enddate1'&&!_EndDate1" class="fs-7" style="color:red">end date required.</span>
-                </div>
-                <div *ngIf="_EndDate1" class="repeat-select-text">
-                    <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
-                    <span>Ends on {{_EndDate1|date:'EEEE, MMMM d y'}}</span>
-                </div>
-        </div>
-            
-        </div>
-        <div class="task-time-modal-footer">
-            <button type="button" class="btn btn-modal-close" (click)="eventtaskitemtimeModal_dismiss()">Close</button>
-            <button type="button" class="btn btn-taskdatetime-save"  (click)="bindCustomRecurrenceValues();">Save</button>
-        </div>
-      </div>
-    </div>
-</div>
-<!-- Create Event Task Item Time Modal End -->
 
 <!-- Custom Task Modal Start -->
 <div class="modal-backdrop fade" id="customTaskModalBackdrop" style="display: none"></div>
@@ -4005,9 +3812,9 @@
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 8C21 6.34315 19.6569 5 18 5H10C8.34315 5 7 6.34315 7 8V20C7 21.6569 8.34315 23 10 23H18C19.6569 23 21 21.6569 21 20V8ZM19 8C19 7.44772 18.5523 7 18 7H10C9.44772 7 9 7.44772 9 8V20C9 20.5523 9.44772 21 10 21H18C18.5523 21 19 20.5523 19 20V8Z" fill="currentColor"></path> <path d="M6 3H16C16.5523 3 17 2.55228 17 2C17 1.44772 16.5523 1 16 1H6C4.34315 1 3 2.34315 3 4V18C3 18.5523 3.44772 19 4 19C4.55228 19 5 18.5523 5 18V4C5 3.44772 5.44772 3 6 3Z" fill="currentColor"></path> </g></svg>
                         </div>
 
-                        <div *ngIf="Status1=='Owner' && Schedule_type1=='Event' && this.RecurrenceValue != 'Daily' && (this.teamsCalendar == 1 || teamsCalendar == 0 || this.selectEmployee == this.Current_user_ID)" class="custom-evt-tsk-action-icon" title="Repeat" (click)="repeatEvent()" >
+                        <!-- <div *ngIf="Status1=='Owner' && Schedule_type1=='Event' && this.RecurrenceValue != 'Daily' && (this.teamsCalendar == 1 || teamsCalendar == 0 || this.selectEmployee == this.Current_user_ID)" class="custom-evt-tsk-action-icon" title="Repeat" (click)="repeatEvent()" >
                             <svg  width="64px" height="64px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g  id="Repeat-Play"><rect  id="Rectangle" fill-rule="nonzero" x="0" y="0" width="24" height="24"></rect><path  d="M5,18.0002 L17,18.0002 C18.6569,18.0002 20,16.657 20,15.0002 L20,14" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path  d="M16,2 L19.2929,5.29289 C19.6834,5.68342 19.6834,6.31658 19.2929,6.70711 L16,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path  d="M8,14 L4.70711,17.2929 C4.31658,17.6834 4.31658,18.3166 4.70711,18.7071 L8,22" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path  d="M19,6 L7,6 C5.34315,6 4,7.34315 4,9 L4,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></g></g></g></svg>
-                        </div>
+                        </div> -->
 
 
                         <div class="custom-evt-tsk-action-icon" title="Pending" *ngIf="Meeting_status==false && AdminMeeting_Status==0 && Isadmin==true  && pending_status==false && (this.teamsCalendar == 1 || teamsCalendar == 0 || this.selectEmployee == this.Current_user_ID)" (click)="sweet_pending()">
@@ -4088,13 +3895,7 @@
                                 <button #lessbtn2 title="show less" class="txt-expnd-btn align-self-end d-none" (click)="prjDescBx2.classList.add('compl-remarks-span'); lessbtn2.classList.add('d-none');">
                                     <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                 </button>
-
-
-
                         </div>
-
-
-
                    
                     <div class="custom-evt-tsk-item">
                         <div class="custom-evt-tsk-item-icon">
@@ -4239,7 +4040,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -4523,7 +4323,7 @@
                     </div>
 
 
-                    <div class="custom-evt-tsk-footer d-none" id=""   *ngIf="Status1=='Owner' && Schedule_type1=='Event' && this.RecurrenceValue != 'Daily' && (this.teamsCalendar == 1 || teamsCalendar == 0 || this.selectEmployee == this.Current_user_ID)">     
+                    <div class="custom-evt-tsk-footer" id=""   *ngIf="Status1=='Owner' && Schedule_type1=='Event' && this.RecurrenceValue != 'Daily' && (this.teamsCalendar == 1 || teamsCalendar == 0 || this.selectEmployee == this.Current_user_ID)">     
                         <div><span>Repeat Event?</span></div>      
                         <div class="custom-evt-tsk-footer-action">
                             <div class="action-btns">
@@ -4538,20 +4338,52 @@
                         <h6>Repeat Event</h6>
                         <div class="repeat-date-time">
                             <div class="form-group mb-0">
-                                <div class="curser-pointer" (click)="Repeat_date_time_menu()">
+                                <!-- <div class="curser-pointer" (click)="Repeat_date_time_menu()"> -->
+                                      <div class="curser-pointer" (click)="eventtaskitemtimeModal()">
                                     <div class="repeat-dt-tm">
                                         <div>
-                                            <span>{{repeatStartDate | date:'EEEE, MMMM d, YYYY'}}</span>
+                                            <span>{{_StartDate | date:'EEEE, MMMM d, YYYY'}}</span>
                                         </div>
                                         <div class="d-flex">
-                                            <span class="picktime-box">{{repeatStartts}}</span>
+                                            <span class="picktime-box">{{Startts}}</span>
                                             <span class="repeat-dt-muted">-</span>
-                                            <span class="picktime-box">{{repeatEndtms}}</span>
+                                            <span class="picktime-box">{{Endtms}}</span>
                                         </div>
                                     </div>
                                     <div class="repeat-dt-text">
                                         <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
-                                        <span>The repeated event on {{repeatStartDate | date:'EEEE, MMMM d, YYYY'}} from {{repeatStartts}} until {{repeatEndtms}}</span>
+                                        <!-- <span>The repeated event on {{repeatStartDate | date:'EEEE, MMMM d, YYYY'}} from {{repeatStartts}} until {{repeatEndtms}}</span> -->
+                                                                   
+                                      <span>The {{ScheduleType=='Event'?'event':ScheduleType=='Task'?'task':''}} scheduled on {{_StartDate|date:'MMMM d, y'}} {{Startts}} to {{Endtms}}
+                                          -
+                                            <ng-container  *ngIf="selectedrecuvalue">
+                                                <span *ngIf="selectedrecuvalue=='0'">Do not repeat</span>
+                                                <span *ngIf="selectedrecuvalue=='1'">Daily until {{_EndDate|date:'MMMM d, y'}}</span>
+                                                <span *ngIf="selectedrecuvalue=='2'">Weekly until {{_EndDate|date:'MMMM d, y'}}</span>
+                                                <span *ngIf="selectedrecuvalue=='3'">Monthly until {{_EndDate|date:'MMMM d, y'}}</span>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="selectedrecuvalue=='2'">
+                                                -
+                                                <ng-container *ngIf="mtgOnDays.length===1">Every {{mtgOnDays[0]}}</ng-container>
+                                                <ng-container *ngIf="mtgOnDays.length>1"> on
+                                                    <ng-container *ngFor="let day of mtgOnDays;let i=index">
+                                                    {{day+(i+1===mtgOnDays.length?'.':i+2===mtgOnDays.length?' and ':', ')}}
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+
+                                              <ng-container  *ngIf="selectedrecuvalue=='3'">
+                                                -
+                                                  <ng-container *ngIf="mtgOnDays.length===1">Every {{mtgOnDays[0]}}</ng-container>
+                                                  <ng-container *ngIf="mtgOnDays.length>1"> on
+                                                      <ng-container *ngFor="let day of mtgOnDays;let i=index">
+                                                         {{day+(i+1===mtgOnDays.length?'.':i+2===mtgOnDays.length?' and ':', ')}}
+                                                      </ng-container>
+                                                  </ng-container>
+                                                </ng-container>
+                                            </span>
+                                                                   
                                     </div>                       
                                 </div>
                                 <div class="repeat-date-time-menu" id="repeat-date-time-menu">
@@ -4594,7 +4426,7 @@
                         <span *ngIf="earlyDate==true" style="color:red">invalid date.</span>
                         <div class="w-100 text-right mt-2">
                             <button class="btn btn-evt-foot yes" (click)="submitEventToRepeat()">Submit repeat event</button>
-                            <!-- <button class="btn btn-evt-foot ml-2" (click)="onCustomBtnClicked()"  href="#propse11" >Custom</button> -->
+                            <button class="btn btn-evt-foot ml-2" (click)="onCustomBtnClicked()"  href="#propse11" >Custom</button>
                             <button id='closeRepeatDialog_btn' class="btn btn-evt-foot ml-2" data-toggle="collapse"
                             href="#propse11">Cancel</button>
                         </div>
@@ -4608,6 +4440,223 @@
     </div>
 </div>
 <!-- Custom Event Modal End -->
+
+
+
+
+
+
+<!-- Create Event Task Item Time Modal Start -->
+<div class="modal-backdrop fade" id="eventtaskitemtimeModalBackdrop" style="display: none"></div>
+<div class="modal fade" id="eventtaskitemtimeModal" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="eventtaskitemtimeModalLabel" aria-modal="true" style="display: none">
+    <div class="modal-dialog modal-sm modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+            <div class="task-time-modal-calendar">
+                <mat-card class="calendar-card">
+                    <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                </mat-card>
+            </div>
+            <hr>
+            <div class="modal-time-item">
+                <div class="modal-time-item-icon">
+                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> <path d="M12 5C11.4477 5 11 5.44771 11 6V12.4667C11 12.4667 11 12.7274 11.1267 12.9235C11.2115 13.0898 11.3437 13.2343 11.5174 13.3346L16.1372 16.0019C16.6155 16.278 17.2271 16.1141 17.5032 15.6358C17.7793 15.1575 17.6155 14.5459 17.1372 14.2698L13 11.8812V6C13 5.44772 12.5523 5 12 5Z" fill="currentColor"></path> </g></svg>
+                </div>
+                <div class="modal-time-item-control">
+                    <ng-select  [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
+                    placeholder="Start time" [(ngModel)]="Startts" (change)="addstarttime()">
+                         <ng-option  *ngFor="let item of validStartTimearr; let i=index" [value]="item">
+                            {{item}}
+                         </ng-option>
+                    </ng-select>
+                     <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
+                </div>
+                <div class="modal-time-item-control">
+                    <ng-select  placeholder="End time" [ngClass]="{'error-vd': !Endtms&&notProvided}"  (open)="onfocus($event)"  [(ngModel)]="Endtms" >
+                        <ng-option *ngFor="let item1 of EndTimearr; let i = index" [value]="item1">
+                            {{item1}}
+                            ({{i*5>60?((i*5/60).toFixed(1)+' hrs'):(i*5+' mins')}})
+                        </ng-option>
+                    </ng-select>
+                    <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
+                </div>
+            </div>
+            <div class="modal-time-item">
+                <div class="modal-time-item-icon">
+                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 2L14 5M14 5L11 8M14 5H6.8C5.11984 5 4.27976 5 3.63803 5.32698C3.07354 5.6146 2.6146 6.07354 2.32698 6.63803C2 7.27976 2 8.11984 2 9.8V15.5C2 15.9644 2 16.1966 2.02567 16.3916C2.2029 17.7378 3.26222 18.7971 4.60842 18.9743C4.80337 19 5.03558 19 5.5 19M10 19H17.2C18.8802 19 19.7202 19 20.362 18.673C20.9265 18.3854 21.3854 17.9265 21.673 17.362C22 16.7202 22 15.8802 22 14.2V8.5C22 8.03558 22 7.80337 21.9743 7.60842C21.7971 6.26222 20.7378 5.2029 19.3916 5.02567C19.1966 5 18.9644 5 18.5 5M10 19L13 22M10 19L13 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                </div>
+                <div class="modal-time-item-control"  id="div_recurrence">
+                    <mat-select name="Select Type" placeholder="Do not repeat"
+                    [(value)]="selectedrecuvalue1" class="form-control" (selectionChange)="onRecurrenceTypeChange($event);" >
+
+                    <mat-option value="0">Do not repeat</mat-option>
+                    <mat-option value="1">Daily</mat-option>
+                    <mat-option value="2">Weekly</mat-option>
+                    <mat-option value="3">Monthly</mat-option>
+
+                   </mat-select>
+
+                    <!-- <ng-select  placeholder="Do not repeat"    [(ngModel)]="selectedrecuvalue1" class="form-control"  (selectionChange)="onRecurrenceTypeChange($event)" >
+                        <ng-option [value]="0">Do not repeat</ng-option>
+                        <ng-option [value]="1">Daily</ng-option>
+                        <ng-option [value]="2">Weekly</ng-option>
+                        <ng-option [value]="3">Monthly</ng-option>
+                    </ng-select> -->
+
+                </div>
+            </div>
+            <div id="weekly_121_new" style="display: none;" class="form-group">
+                <label class="kt-label">Days</label>
+                <div class="pt-1">
+                  <div class="d-flex">
+                    <ng-container *ngFor="let item of dayArr1">
+                        <div
+                            [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                            <input (change)="selectedDay($event)" id="{{item.value}}"
+                                type="checkbox" name="DaysChk" value="{{item.value}}"
+                                class="rep-chk" />
+                            {{item.Day}}
+                        </div>
+                    </ng-container>
+                    <!-- <div class="repeat-day active"><input type="checkbox" name="DaysChk" class="repeat-check" id="Sun" value="Sun"> S </div>
+                      
+                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Mon" value="Mon"> M </div>
+                        
+                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Tue" value="Tue"> T </div>
+                      
+                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Wed" value="Wed"> W </div>
+                      
+                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Thu" value="Thu"> Th </div>
+                      
+                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Fri" value="Fri"> Fr </div>
+                      
+                    <div class="repeat-day"><input type="checkbox" name="DaysChk" class="repeat-check" id="Sat" value="Sat"> Sa </div> -->
+                  </div>
+                  <span *ngIf="notProvided1==='dayarr1'" class="fs-7" style="color:red">choose a day.</span>
+                </div>
+              </div>
+              <div id="Monthly_121_new" style="display: none;" class="form-group">
+                <label class="kt-label">Days</label>
+                <div class="pt-1">
+                  <div class="d-flex flex-wrap">
+                    <ng-container *ngFor="let item of MonthArr1">
+                        <div
+                            [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                            <input (change)="selectmonthlydays($event)" id="{{item.value}}"
+                                type="checkbox" name="monthChk" value="{{item.value}}"
+                                class="rep-chk" />
+                            {{item.Day}}
+                        </div>
+                    </ng-container>
+                    <!-- <div class="repeat-day active"><input type="checkbox" name="monthChk" class="repeat-check" id="01" value="01"> 01 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="02" value="02"> 02 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="03" value="03"> 03 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="04" value="04"> 04 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="05" value="05"> 05 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="06" value="06"> 06 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="07" value="07"> 07 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="08" value="08"> 08 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="09" value="09"> 09 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="10" value="10"> 10 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="11" value="11"> 11 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="12" value="12"> 12 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="13" value="13"> 13 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="14" value="14"> 14 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="15" value="15"> 15 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="16" value="16"> 16 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="17" value="17"> 17 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="18" value="18"> 18 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="19" value="19"> 19 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="20" value="20"> 20 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="21" value="21"> 21 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="22" value="22"> 22 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="23" value="23"> 23 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="24" value="24"> 24 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="25" value="25"> 25 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="26" value="26"> 26 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="27" value="27"> 27 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="28" value="28"> 28 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="29" value="29"> 29 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="30" value="30"> 30 </div>
+                    
+                    <div class="repeat-day"><input type="checkbox" name="monthChk" class="repeat-check" id="31" value="31"> 31 </div> -->
+                    
+                  </div>
+                  <span *ngIf="notProvided1==='montharr1'" class="fs-7" style="color:red">choose a day.</span>
+                </div>
+              </div>
+            <div class="mb-4" id="div_endDate_new">
+                <label class="kt-label">Recurrence end date</label>
+                <div class="endtill-date">
+                    <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()"  [(ngModel)]="_EndDate1"  placeholder="End Date"
+                            class="form-control" style="padding-left: 4rem !important;"    [min]="today">
+                        <span class="endtill-date-icon">
+                            <mat-datepicker-toggle matSuffix [for]="div_endDatepicker"></mat-datepicker-toggle>
+                            <mat-datepicker #div_endDatepicker></mat-datepicker>
+                        </span>
+                        <span *ngIf="notProvided1==='enddate1'&&!_EndDate1" class="fs-7" style="color:red">end date required.</span>
+                </div>
+                <div *ngIf="_EndDate1" class="repeat-select-text">
+                    <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
+                    <span>Ends on {{_EndDate1|date:'EEEE, MMMM d y'}}</span>
+                </div>
+        </div>
+            
+        </div>
+        <div class="task-time-modal-footer">
+            <button type="button" class="btn btn-modal-close" (click)="eventtaskitemtimeModal_dismiss()">Close</button>
+            <button type="button" class="btn btn-taskdatetime-save"  (click)="bindCustomRecurrenceValues();">Save</button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Create Event Task Item Time Modal End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- Project Modal Start -->
 <div class="modal-backdrop fade" id="schedule-event-modal-backdrop" style="display: none"></div>

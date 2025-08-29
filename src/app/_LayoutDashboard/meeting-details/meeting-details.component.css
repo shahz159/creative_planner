@@ -12104,3 +12104,23 @@ iframe {
     cursor: pointer;
     transition: all 0.15s ease-in-out;
 } */
+
+
+::ng-deep .angular-editor-textarea img {
+    width: 100%!important;
+}
+
+::ng-deep .attendees-note-userlist img {
+    width: 100%!important;
+}
+.attendees-note-userlist .user-info img{
+    width: 35px !important;
+    height: 35px !important;
+}
+
+
+/* ::ng-deep angular-editor img {
+  width: 50px !important;
+  height: 50px !important;
+  object-fit: contain; 
+} */

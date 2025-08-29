@@ -16,7 +16,7 @@ export class CalenderService {
   readonly rootUrl = this.commonUrl.apiurl;
   readonly rootUrlcore = this.commonUrl.apiurlcore;
   
-  GetCalenderProjectandsubList(obj: CalenderDTO) {  
+  GetCalenderProjectandsubList(obj: CalenderDTO) {  debugger
     let EmpNo = localStorage.getItem('EmpNo');
     this.obj_CalenderDTO.EmpNo = EmpNo;
     this.obj_CalenderDTO.Project_Code = obj.Project_Code;
@@ -136,7 +136,7 @@ export class CalenderService {
     this.obj_CalenderDTO.EndTime = obj.EndTime;
     return this.http.post(this.rootUrl + "CalenderAPI/Newupdatetimeanddate_meetingreportco", this.obj_CalenderDTO);
   }
-  NewGetMeeting_report(obj:CalenderDTO){
+  NewGetMeeting_report(obj:CalenderDTO){  
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Note = obj.Note;
     this.obj_CalenderDTO.Action_item = obj.Action_item;
@@ -151,7 +151,7 @@ export class CalenderService {
     this.obj_CalenderDTO.Schedule_ID = sc_id;
     return this.http.post(this.rootUrl + "CalenderAPI/NewUpdateCalendarTaskUncomplete", this.obj_CalenderDTO);
   }
-  NewTImerMeeting_report(obj:CalenderDTO){
+  NewTImerMeeting_report(obj:CalenderDTO){ 
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Status = obj.Status;
@@ -289,11 +289,11 @@ NewPending_table(obj:CalenderDTO){ debugger
 }
 
   NewInsertCalender(obj: CalenderDTO){
-    debugger
+  
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.draftid=obj.draftid;
-    this.obj_CalenderDTO.attachment= obj.attachment;
+    this.obj_CalenderDTO.attachment= obj.attachment;   debugger
     return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_CalenderUpdated", this.obj_CalenderDTO);
   }
 

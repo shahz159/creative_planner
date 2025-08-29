@@ -352,7 +352,7 @@ export class StreamDashboardComponent implements OnInit {
    
       
       this.scheduleItems = JSON.parse(data['Scheduledtime']);
-      console.log( this.scheduleItems, "Calendar Data 1");
+      // console.log( this.scheduleItems, "Calendar Data 1");
       this.scheduleItems.forEach(day => {
       day.Events.forEach(event => {
         const start = new Date(event.startTime);
@@ -881,7 +881,7 @@ Event_acceptandReject(EventAction_type,Schedule_ID) {
     this._calenderDto.flagid = EventAction_type;
     this._calenderDto.Schedule_ID = Schedule_ID;
     
-    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => { debugger
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => { 
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
         this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber; 
@@ -1069,7 +1069,7 @@ Acknowledgement() {
   })
 }
 
-
+MasterCode: any = [];
 HasAcknowledged:any;
 
 GetHasAcknowledgeService() {
@@ -1083,6 +1083,59 @@ GetHasAcknowledgeService() {
        }            
   })
 }
+
+ ScheduleType: any;
+
+End_meeting(Schedule_ID,ProjectCode) { 
+  if (this.isSubmitting) return;
+  this.isSubmitting = true;
+
+  this.ScheduleType = "Task"
+  this._calenderDto.Schedule_ID = Schedule_ID;
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.Status = 'End';
+  this._calenderDto.User_Type = 'Admin';
+  this.CalenderService.NewTImerMeeting_report(this._calenderDto).subscribe
+    (data => {  
+    });
+  if (this.ScheduleType == 'Task') { 
+    this._calenderDto.Project = ProjectCode;
+
+    this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
+      (data => { 
+        this.meetingDetails(); 
+        this.isSubmitting = false;   
+      });
+    console.log(this._calenderDto, "dto")
+    this.notifyService.showSuccess("Task completed.", "Success");
+  } 
+}
+
+  uncomplete_task(Schedule_ID) { 
+      if (this.isSubmitting) return;
+      this.isSubmitting = true;
+
+    this.CalenderService.NewTaskUncomplete(Schedule_ID).subscribe
+      (data => {
+         this.meetingDetails();    
+         this.isSubmitting = false;
+      });
+    this.notifyService.showSuccess("Task Uncomplete.", "Success");
+  }
+
+
+newDetails(ProjectCode) {  
+  let name: string = 'Details';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${ProjectCode}`;
+  var myWindow = window.open(myurl, ProjectCode);
+  myWindow.focus();
+}
+
+
+
+
+
 
 }
 
